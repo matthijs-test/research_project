@@ -1,0 +1,29 @@
+# Data files (NEVER commit datasets!)
+data/raw/
+data/processed/
+experiments/runs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+src/__pycache__/
+
+# Models (optional - decide if you want to track small models)
+*.pth
+*.pt
+
+# Environment
+.env
+myenv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+*.code-workspace

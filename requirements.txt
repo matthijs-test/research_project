@@ -1,0 +1,27 @@
+# Core Scientific Computing
+numpy
+pandas
+scipy
+
+# Signal Processing
+PyWavelets
+
+# Machine Learning / Deep Learning
+torch
+torchvision
+torchaudio
+
+# Computer Vision / Image Processing
+Pillow
+
+# Visualization
+matplotlib
+
+# Progress Bars
+tqdm
+
+# Kaggle Dataset Download
+kagglehub
+
+# Model Inspection (optional but useful)
+torchinfo
