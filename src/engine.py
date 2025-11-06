@@ -10,7 +10,7 @@ This module contains functions for:
 import torch
 import torch.nn as nn
 from tqdm.auto import tqdm
-
+from torch.utils.tensorboard import SummaryWriter
 
 def train_step(model: torch.nn.Module,
                dataloader: torch.utils.data.DataLoader,
@@ -173,5 +173,87 @@ def train(model: torch.nn.Module,
         results["train_acc"].append(train_acc.item() if isinstance(train_acc, torch.Tensor) else train_acc)
         results["test_loss"].append(test_loss.item() if isinstance(test_loss, torch.Tensor) else test_loss)
         results["test_acc"].append(test_acc.item() if isinstance(test_acc, torch.Tensor) else test_acc)
+    
+    return results
+
+
+
+
+
+
+
+
+
+
+
+
+
+def train_tensorboard(model: torch.nn.Module,
+          train_dataloader: torch.utils.data.DataLoader,
+          test_dataloader: torch.utils.data.DataLoader,
+          optimizer: torch.optim.Optimizer,
+          device,
+          loss_fn: torch.nn.Module = nn.CrossEntropyLoss(),
+          epochs: int = 5,
+          writer: SummaryWriter = None):
+    """
+    Full training loop for multiple epochs.
+    
+    Args:
+        model: PyTorch model to train
+        train_dataloader: Training DataLoader
+        test_dataloader: Testing DataLoader
+        optimizer: Optimizer
+        device: Device to train on
+        loss_fn: Loss function (default: CrossEntropyLoss)
+        epochs: Number of epochs to train
+        writer: Optional TensorBoard SummaryWriter for logging
+    
+    Returns:
+        results: Dictionary with training history
+                 {"train_loss": [...], "train_acc": [...], 
+                  "test_loss": [...], "test_acc": [...]}
+    """
+    results = {
+        "train_loss": [],
+        "train_acc": [],
+        "test_loss": [],
+        "test_acc": []
+    }
+    
+    for epoch in tqdm(range(epochs)):
+        train_loss, train_acc = train_step(
+            model=model,
+            dataloader=train_dataloader,
+            loss_fn=loss_fn,
+            optimizer=optimizer,
+            device=device
+        )
+        
+        test_loss, test_acc = test_step(
+            model=model,
+            dataloader=test_dataloader,
+            loss_fn=loss_fn,
+            device=device
+        )
+        
+        print(
+            f"Epoch: {epoch+1} | "
+            f"train_loss: {train_loss:.4f} | "
+            f"train_acc: {train_acc:.4f} | "
+            f"test_loss: {test_loss:.4f} | "
+            f"test_acc: {test_acc:.4f}"
+        )
+        
+        results["train_loss"].append(train_loss.item() if isinstance(train_loss, torch.Tensor) else train_loss)
+        results["train_acc"].append(train_acc.item() if isinstance(train_acc, torch.Tensor) else train_acc)
+        results["test_loss"].append(test_loss.item() if isinstance(test_loss, torch.Tensor) else test_loss)
+        results["test_acc"].append(test_acc.item() if isinstance(test_acc, torch.Tensor) else test_acc)
+        
+        if writer:
+            writer.add_scalar('Loss/train', train_loss, epoch)
+            writer.add_scalar('Loss/test', test_loss, epoch)
+            writer.add_scalar('Accuracy/train', train_acc, epoch)
+            writer.add_scalar('Accuracy/test', test_acc, epoch)
     
     return results

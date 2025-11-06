@@ -38,35 +38,38 @@ def plot_loss_curves(results: Dict[str, List[float]]):
                   "test_loss": [...],
                   "test_acc": [...]}
     """
-    # Get the loss values
     loss = results['train_loss']
     test_loss = results['test_loss']
     
-    # Get the accuracy values
     accuracy = results['train_acc']
     test_accuracy = results['test_acc']
     
     epochs = range(len(results['train_loss']))
     
-    # Setup a plot
-    plt.figure(figsize=(15, 7))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7))
     
     # Plot loss
-    plt.subplot(1, 2, 1)
-    plt.plot(epochs, loss, label='train_loss')
-    plt.plot(epochs, test_loss, label='test_loss')
-    plt.title('Loss')
-    plt.xlabel('Epochs')
-    plt.legend()
-    
+    ax1.plot(epochs, loss, label='train_loss')
+    ax1.plot(epochs, test_loss, label='test_loss')
+    ax1.set_title('Loss')
+    ax1.set_xlabel('Epochs')
+    ax1.set_xlim(0, len(epochs) - 1)
+    ax1.set_ylim(bottom=0)
+    ax1.legend()
+    ax1.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+    ax1.grid(True, alpha=0.3)
     # Plot accuracy
-    plt.subplot(1, 2, 2)
-    plt.plot(epochs, accuracy, label='train_accuracy')
-    plt.plot(epochs, test_accuracy, label='test_accuracy')
-    plt.title('Accuracy')
-    plt.xlabel('Epochs')
-    plt.legend()
-    
+    ax2.plot(epochs, accuracy, label='train_accuracy')
+    ax2.plot(epochs, test_accuracy, label='test_accuracy')
+    ax2.set_title('Accuracy')
+    ax2.set_xlabel('Epochs')
+    ax2.set_xlim(0, len(epochs) - 1)
+    ax2.set_ylim(0, 1)
+    ax2.legend()
+    ax2.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+    ax2.grid(True, alpha=0.3)
+
+    plt.tight_layout()
     plt.show()
 
 
@@ -82,3 +85,5 @@ def save_model(model, save_path):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     torch.save(model.state_dict(), save_path)
     print(f"Model saved to {save_path}")
+
+

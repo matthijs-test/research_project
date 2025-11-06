@@ -492,13 +492,13 @@ def process_windows_2(manifest,
     Yields:
         Same format as process_windows, but data is TF magnitude (or transformed TF)
     """
-    # Set default transform params
+    #  default transform params
     if transform == 'cwt' and transform_params is None:
         transform_params = {'scales': np.arange(1, 128), 'wavelet': 'morl'}
     elif transform == 'stft' and transform_params is None:
         transform_params = {'fs': 50000, 'nperseg': 256}
     
-    # Calculate step size for windowing
+    #  step size for windowing
     step = int(window_length * (1 - overlap))
     
     # Filter manifest
@@ -528,8 +528,8 @@ def process_windows_2(manifest,
             # Compute transfer function: H(f) = FFT(output) / FFT(input)
             fft_input = np.fft.rfft(input_window)
             fft_output = np.fft.rfft(output_window)
-            tf = fft_output / (fft_input + 1e-10)  # Avoid division by zero
-            tf_magnitude = np.abs(tf)  # Take magnitude
+            tf = fft_output / (fft_input + 1e-10)  #division by zero
+            tf_magnitude = np.abs(tf)  #magnitude
             
             # Apply transform if specified
             if transform is None:
@@ -680,7 +680,6 @@ def plot_transforms_2(manifest,
     plt.tight_layout()
     plt.show()
     
-    # Print summary
     print(f"\nTotal windows: {len(data_list)}")
     if transform:
         print(f"Transform shape: {data_list[0]['data'].shape}")

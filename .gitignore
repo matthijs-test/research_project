@@ -27,3 +27,16 @@ Thumbs.db
 .vscode/
 
 *.code-workspace
+
+# MLflow
+mlruns/
+mlartifacts/
+
+
+# Experiments - Temporary data
+experiments/runs/
+experiments/tensorboard/
+
+# Notebooks - Stray logs
+notebooks/runs/
+notebooks/mlruns/

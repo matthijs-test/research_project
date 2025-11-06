@@ -4,6 +4,7 @@ Models Module
 This module contains functions for:
 - Creating pre-trained Vision Transformer (ViT) models
 - Creating pre-trained ResNet models
+- Many models will be added, it must remain dynamic. 
 - Getting appropriate transforms for each model
 """
 
